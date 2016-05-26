@@ -11,7 +11,10 @@ module Mailgun
     end
 
     def send_message(options)
-      RestClient.post mailgun_url, options
+      RestClient::Resource.new(mailgun_url, 
+                               timeout: (ENV['MAILGUN_REST_CLIENT_TIMEOUT'] || 180).to_i,
+                               open_timeout: (ENV['MAILGUN_REST_CLIENT_TIMEOUT'] || 180).to_i
+                               ).post options
     end
 
     def mailgun_url
